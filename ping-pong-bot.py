@@ -27,8 +27,17 @@ for mention in mentions:
     print('Ping-Pong-Bot: current id = {}'.format(str(mention['id'])))
     if 'ping' in tags:
         print('Ping-Pong-Bot: mention contains "ping" hashtag')
+        moti = {}
+        with open('motivate/motivate/data_unique/unique_quotes.json') as f:
+            moti.update(json.load(f))
+        fortuneint = random.randint(0, len(moti['data']))
+        print('Ping-Pong-Bot: fortune integer = {}'.format(str(fortuneint)))
+        fortunestr = moti['data'][fortuneint]['quote']
         screen_name = mention['user']['screen_name']
-        retweet_text = '@{} Here is your #pong :-)'.format(screen_name)
+        if len(moti['data'][fortuneint]['quote']) < 279:
+            retweet_text = '@{} {} #pong'.format(screen_name, fortunestr)
+        else:
+            retweet_text = '@{} Here is your #pong :-)'.format(screen_name)
         print('Ping-Pong-Bot: retweet')
         retweet = api.PostUpdates(retweet_text, in_reply_to_status_id=id)
     else:
